@@ -69,39 +69,22 @@ async function getWeather(city) {
 io.on('connection', (socket) => {
   console.log('User connected');
 
-  socket.on('getWeather', async (query) => {
-    let city = query;
-    let message;
+  socket.on('getWeather', async (city) => {
+    const weatherData = await getWeather(city);
 
-    // Check if the query is about rain probability
-    if (query.toLowerCase().includes('probability of rain')) {
-      const cityMatch = query.match(/in\s+(\w+)/);
-      if (cityMatch && cityMatch[1]) {
-        city = cityMatch[1];
-        const weatherData = await getWeather(city);
-
-        if (weatherData && weatherData.weather) {
-          const rain = weatherData.rain ? weatherData.rain['1h'] : 0;
-          message = `The probability of rain in ${city} is ${rain}%`;
-        } else {
-          message = "Sorry, I couldn't get the weather information. Please check the city name and try again.";
-        }
-      } else {
-        message = "Please specify a city to check the probability of rain.";
-      }
+    if (weatherData && weatherData.weather) {
+      const temperature = weatherData.main.temp;
+      const description = weatherData.weather[0].description;
+      socket.emit(
+        'botMessage',
+        `The current temperature in ${city} is ${temperature}°C with ${description}.`
+      );
     } else {
-      const weatherData = await getWeather(city);
-
-      if (weatherData && weatherData.weather) {
-        const temperature = weatherData.main.temp;
-        const description = weatherData.weather[0].description;
-        message = `The current temperature in ${city} is ${temperature}°C with ${description}.`;
-      } else {
-        message = "Sorry, I couldn't get the weather information. Please check the city name and try again.";
-      }
+      socket.emit(
+        'botMessage',
+        "Sorry, I couldn't get the weather information. Please check the city name and try again."
+      );
     }
-
-    socket.emit('botMessage', message);
   });
 
   socket.on('disconnect', () => {
