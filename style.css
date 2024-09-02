@@ -1,0 +1,73 @@
+body {
+    font-family: Arial, sans-serif;
+    background-image: url(./chat.avif);
+    background-size: cover; /* Ensures the image covers the entire background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.chat-container {
+    width: 400px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-box {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-radius: 10px;
+    position: relative;
+}
+
+.message {
+    padding: 10px;
+    border-radius: 5px;
+    max-width: 80%;
+    background: rgb(255, 255, 255); /* White overlay for better readability */
+}
+
+.bot-message {
+    background-color: #ffffff;
+    align-self: flex-start;
+}
+
+.user-message {
+    background-color: #104f52; /* Dark teal background */
+    color: rgb(255, 255, 255); /* White text */
+    align-self: flex-end;
+}
+
+#message-input {
+    border: none;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+    width: calc(100% - 60px);
+    outline: none;
+}
+
+#send-button {
+    margin-left: 130px;
+    border-radius: 30px;
+    width: 100px;
+    border: none;
+    background-color: #148475; /* Original button color */
+    color: white; /* Original text color */
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effect */
+}
+
+#send-button:hover {
+    background-color: rgb(224, 223, 223); /* Background color on hover */
+    color: black; /* Text color on hover */
+}
