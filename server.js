@@ -74,13 +74,15 @@ io.on('connection', (socket) => {
 
     if (weatherData && weatherData.weather) {
       let responseMessage;
+      const temperature = weatherData.main.temp;
+      const humidity = weatherData.main.humidity;
+      const windSpeed = weatherData.wind.speed;
+      const description = weatherData.weather[0].description;
+
       if (type === 'wind') {
-        const windSpeed = weatherData.wind.speed;
         responseMessage = `The current wind speed in ${city} is ${windSpeed} m/s.`;
       } else {
-        const temperature = weatherData.main.temp;
-        const description = weatherData.weather[0].description;
-        responseMessage = `The current temperature in ${city} is ${temperature}°C with ${description}.`;
+        responseMessage = `The current temperature in ${city} is ${temperature}°C with ${description}. The humidity is ${humidity}% and the wind speed is ${windSpeed} m/s.`;
       }
       socket.emit('botMessage', responseMessage);
     } else {
