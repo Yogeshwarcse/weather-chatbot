@@ -69,16 +69,20 @@ async function getWeather(city) {
 io.on('connection', (socket) => {
   console.log('User connected');
 
-  socket.on('getWeather', async (city) => {
+  socket.on('getWeather', async (city, type) => {
     const weatherData = await getWeather(city);
 
     if (weatherData && weatherData.weather) {
-      const temperature = weatherData.main.temp;
-      const description = weatherData.weather[0].description;
-      socket.emit(
-        'botMessage',
-        `The current temperature in ${city} is ${temperature}°C with ${description}.`
-      );
+      let responseMessage;
+      if (type === 'wind') {
+        const windSpeed = weatherData.wind.speed;
+        responseMessage = `The current wind speed in ${city} is ${windSpeed} m/s.`;
+      } else {
+        const temperature = weatherData.main.temp;
+        const description = weatherData.weather[0].description;
+        responseMessage = `The current temperature in ${city} is ${temperature}°C with ${description}.`;
+      }
+      socket.emit('botMessage', responseMessage);
     } else {
       socket.emit(
         'botMessage',
